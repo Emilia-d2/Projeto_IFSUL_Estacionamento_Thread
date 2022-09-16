@@ -15,7 +15,7 @@ public class Estacionamento {
       
 private int quantVagas;
 private boolean esgotado;
-private List<Integer> vagasDisponiv = new ArrayList<Integer>();
+private int[] vagasDisponiv = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
 
     public int getQuantVagas() {
         return quantVagas;
@@ -33,13 +33,14 @@ private List<Integer> vagasDisponiv = new ArrayList<Integer>();
         this.esgotado = esgotado;
     }
 
-    public List<Integer> getVagasDisponiv() {
+    public int[] getVagasDisponiv() {
         return vagasDisponiv;
     }
 
-    public void setVagasDisponiv(List<Integer> vagasDisponiv) {
+    public void setVagasDisponiv(int[] vagasDisponiv) {
         this.vagasDisponiv = vagasDisponiv;
     }
-
+    
+    
 
 }

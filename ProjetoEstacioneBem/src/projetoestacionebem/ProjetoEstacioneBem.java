@@ -16,7 +16,7 @@ public class ProjetoEstacioneBem {
     public static void main(String[] args) {
         /* verificação do atendente
         Atendente atend = new Atendente();
-        
+
         atend.setAtendendo(true);
         atend.verificaAtendendo();
         atend.setTempoTrabalhando(atend.verificaAtendendo());
@@ -24,9 +24,9 @@ public class ProjetoEstacioneBem {
         atend.pagaSalario();
         System.out.println(atend.getNome());
         System.out.println(atend.verificaAtendendo());
-        
+
         System.out.println(atend.calculaTempoTrabalho());
         System.out.println(atend.pagaSalario());*/
     }
-    
+
 }

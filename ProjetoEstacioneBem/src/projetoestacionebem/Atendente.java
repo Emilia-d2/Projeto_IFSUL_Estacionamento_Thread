@@ -9,11 +9,11 @@ package projetoestacionebem;
  * @author milif
  */
 public class Atendente {
-    
-private String nome = "Afonso";
-private float salarioAtend = (float) 0.50;
-private int tempoTrabalhando;
-private boolean atendendo;
+
+    private String nome = "Afonso";
+    private float salarioAtend = (float) 0.50;
+    private int tempoTrabalhando;
+    private boolean atendendo;
 
     public String getNome() {
         return nome;
@@ -31,7 +31,6 @@ private boolean atendendo;
         this.salarioAtend = salarioAtend;
     }
 
-
     public int getTempoTrabalhando() {
         return tempoTrabalhando;
     }
@@ -47,40 +46,32 @@ private boolean atendendo;
     public void setAtendendo(boolean atendendo) {
         this.atendendo = atendendo;
     }
-     
-    public int calculaTempoTrabalho(){
+
+    public int calculaTempoTrabalho() {
         int minutos = getTempoTrabalhando();
         return minutos;
     }
 
-    public float pagaSalario(){
+    public float pagaSalario() {
         int minutos = calculaTempoTrabalho();
         float valor = getSalarioAtend();
         float salario = minutos * valor;
         return salario;
     }
-    
-    public int verificaAtendendo(){
+
+    public int verificaAtendendo() {
         boolean atendendo = isAtendendo();
-        int tempo = 0; 
-        if(atendendo == true){
+        int tempo = 0;
+        if (atendendo == true) {
             for (int i = tempo; i < 5; i++) {
                 tempo = i;
                 tempo++;
             }
-        }
-        else{
+        } else {
             tempo++;
         }
-        //lembrar de colocar o sleep da threand
+        // lembrar de colocar o sleep da threand
         return tempo;
     }
 
-    boolean setTempoTrabalhando() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
-    
 }
-
-
