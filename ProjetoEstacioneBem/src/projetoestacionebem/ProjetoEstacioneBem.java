@@ -14,7 +14,19 @@ public class ProjetoEstacioneBem {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        /* verificação do atendente
+        Atendente atend = new Atendente();
+        
+        atend.setAtendendo(true);
+        atend.verificaAtendendo();
+        atend.setTempoTrabalhando(atend.verificaAtendendo());
+        atend.calculaTempoTrabalho();
+        atend.pagaSalario();
+        System.out.println(atend.getNome());
+        System.out.println(atend.verificaAtendendo());
+        
+        System.out.println(atend.calculaTempoTrabalho());
+        System.out.println(atend.pagaSalario());*/
     }
     
 }
