@@ -1,8 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package projetoestacionebem;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 /**
  *
@@ -10,23 +11,40 @@ package projetoestacionebem;
  */
 public class ProjetoEstacioneBem {
 
-    /**
-     * @param args the command line arguments
-     */
+
     public static void main(String[] args) {
-        /* verificação do atendente
-        Atendente atend = new Atendente();
 
-        atend.setAtendendo(true);
-        atend.verificaAtendendo();
-        atend.setTempoTrabalhando(atend.verificaAtendendo());
-        atend.calculaTempoTrabalho();
-        atend.pagaSalario();
-        System.out.println(atend.getNome());
-        System.out.println(atend.verificaAtendendo());
+        try {
+            BlockingQueue<Carro> listaEsperaCarros = new ArrayBlockingQueue(12);
+            Estacionamento estacioneBem = new Estacionamento();
 
-        System.out.println(atend.calculaTempoTrabalho());
-        System.out.println(atend.pagaSalario());*/
+            Atendente atend = new Atendente(estacioneBem, listaEsperaCarros);
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(System.in));
+
+            // Reading data using readLine
+            String name = reader.readLine();
+            // System.out.println(name);
+            Carro newCar = new Carro(name);
+            listaEsperaCarros.put(newCar);
+            atend.start();
+
+            Thread.sleep(100);
+            // BlockingQueue<Produto> caminhao
+            // = new ArrayBlockingQueue(10);
+
+            // Entregador entregador = new Entregador(caminhao);
+            // entregador.start();
+
+            // Thread.sleep(500);
+
+            // Carregador carregador = new Carregador(caminhao);
+            // carregador.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
+

@@ -4,74 +4,42 @@
  */
 package projetoestacionebem;
 
+import java.util.concurrent.BlockingQueue;
+
 /**
  *
  * @author milif
  */
-public class Atendente {
+public class Atendente extends Thread {
 
-    private String nome = "Afonso";
-    private float salarioAtend = (float) 0.50;
-    private int tempoTrabalhando;
-    private boolean atendendo;
+    public Estacionamento estacionamento;
+    public BlockingQueue<Carro> esperando;
 
-    public String getNome() {
-        return nome;
+    public Atendente() {
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public Atendente(Estacionamento estacionamento, BlockingQueue<Carro> esperando) {
+        this.estacionamento = estacionamento;
+        this.esperando = esperando;
     }
 
-    public float getSalarioAtend() {
-        return salarioAtend;
-    }
-
-    public void setSalarioAtend(float salarioAtend) {
-        this.salarioAtend = salarioAtend;
-    }
-
-    public int getTempoTrabalhando() {
-        return tempoTrabalhando;
-    }
-
-    public void setTempoTrabalhando(int tempoTrabalhando) {
-        this.tempoTrabalhando = verificaAtendendo();
-    }
-
-    public boolean isAtendendo() {
-        return atendendo;
-    }
-
-    public void setAtendendo(boolean atendendo) {
-        this.atendendo = atendendo;
-    }
-
-    public int calculaTempoTrabalho() {
-        int minutos = getTempoTrabalhando();
-        return minutos;
-    }
-
-    public float pagaSalario() {
-        int minutos = calculaTempoTrabalho();
-        float valor = getSalarioAtend();
-        float salario = minutos * valor;
-        return salario;
-    }
-
-    public int verificaAtendendo() {
-        boolean atendendo = isAtendendo();
-        int tempo = 0;
-        if (atendendo == true) {
-            for (int i = tempo; i < 5; i++) {
-                tempo = i;
-                tempo++;
+    @Override
+    public void run() {
+        try {
+            System.out.println("Process " + this.getName()
+                    + " To trabalhando pae!");
+            int indexVaga = estacionamento.consultaDispVagas();
+            Carro carroEsperando = esperando.take();
+            if (indexVaga != -1 && carroEsperando != null) {
+                System.out.println("Process " + this.getName()
+                        + " Adicionando Carro");
+                estacionamento.chegaCarro(carroEsperando);
             }
-        } else {
-            tempo++;
-        }
-        // lembrar de colocar o sleep da threand
-        return tempo;
-    }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        super.run();
+    }
 }
