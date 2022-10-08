@@ -17,6 +17,7 @@ public class Vaga {
         this.codigo = codigo;
     }
 
+
     public int getCodigo() {
         return codigo;
     }

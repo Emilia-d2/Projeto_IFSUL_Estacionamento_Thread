@@ -1,6 +1,7 @@
 package projetoestacionebem;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -12,37 +13,39 @@ import java.util.concurrent.BlockingQueue;
 public class ProjetoEstacioneBem {
 
 
-    public static void main(String[] args) {
-
-        try {
-            BlockingQueue<Carro> listaEsperaCarros = new ArrayBlockingQueue(12);
-            Estacionamento estacioneBem = new Estacionamento();
-
-            Atendente atend = new Atendente(estacioneBem, listaEsperaCarros);
-            BufferedReader reader = new BufferedReader(
+    public static void main(String[] args) throws InterruptedException, IOException {
+        BlockingQueue<Carro> listaEsperaCarros = new ArrayBlockingQueue(12);
+        
+        Estacionamento estacioneBem = new Estacionamento(listaEsperaCarros);
+        
+        Atendente atend = new Atendente(estacioneBem, listaEsperaCarros);
+    
+            BufferedReader placa = new BufferedReader(
                     new InputStreamReader(System.in));
+            
+            BufferedReader escolha = new BufferedReader(
+                    new InputStreamReader(System.in));
+            
+           System.out.println("Bem vindo ao Estacione Bem!");
+                System.out.println("Deseja continuar e colocar seu carro em nossa garagem 1(sim) e 0(não) ");
+                int escolhaUsuario = escolha.hashCode();
+            
+            while(escolhaUsuario != 0){ 
+            
+                System.out.println("Digite sua placa: ");
+                String namePlaca = placa.readLine();
 
-            // Reading data using readLine
-            String name = reader.readLine();
-            // System.out.println(name);
-            Carro newCar = new Carro(name);
-            listaEsperaCarros.put(newCar);
-            atend.start();
+                Carro newCar = new Carro(namePlaca);
+                listaEsperaCarros.put(newCar);
+                System.out.println(" sua placa é " + newCar.getPlacaString());
+                atend.start();
+                estacioneBem.start();
 
-            Thread.sleep(100);
-            // BlockingQueue<Produto> caminhao
-            // = new ArrayBlockingQueue(10);
-
-            // Entregador entregador = new Entregador(caminhao);
-            // entregador.start();
-
-            // Thread.sleep(500);
-
-            // Carregador carregador = new Carregador(caminhao);
-            // carregador.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            }
+            
+            
+          
+        
 
     }
 

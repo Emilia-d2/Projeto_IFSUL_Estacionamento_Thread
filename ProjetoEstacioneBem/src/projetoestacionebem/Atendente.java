@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package projetoestacionebem;
 
 import java.util.concurrent.BlockingQueue;
@@ -15,8 +11,6 @@ public class Atendente extends Thread {
     public Estacionamento estacionamento;
     public BlockingQueue<Carro> esperando;
 
-    public Atendente() {
-    }
 
     public Atendente(Estacionamento estacionamento, BlockingQueue<Carro> esperando) {
         this.estacionamento = estacionamento;
@@ -25,21 +19,24 @@ public class Atendente extends Thread {
 
     @Override
     public void run() {
-        try {
-            System.out.println("Process " + this.getName()
-                    + " To trabalhando pae!");
+        for (int i = 1; i < 13; i++) {
+          try {
+            System.out.println(" To trabalhando pae!");
             int indexVaga = estacionamento.consultaDispVagas();
+            System.out.println(indexVaga);
             Carro carroEsperando = esperando.take();
-            if (indexVaga != -1 && carroEsperando != null) {
-                System.out.println("Process " + this.getName()
-                        + " Adicionando Carro");
-                estacionamento.chegaCarro(carroEsperando);
+            System.out.println("espera " + carroEsperando.getPlacaString());
+            if (indexVaga == -1 && carroEsperando != null) {
+                System.out.println(" Adicionando Carro" + getName());
+                //estacionamento.chegaCarro(carroEsperando);
+                Thread.sleep(800);
             }
-
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
+        }
+       
 
-        super.run();
     }
 }

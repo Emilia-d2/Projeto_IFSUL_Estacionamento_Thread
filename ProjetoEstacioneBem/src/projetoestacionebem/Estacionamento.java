@@ -4,32 +4,37 @@ package projetoestacionebem;
  *
  * @author milif
  */
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
-public class Estacionamento {
-
+public class Estacionamento extends Thread{
+    BlockingQueue<Carro> carroEstacioando;
+    int taken = -1;
     private int tempoLimitePorVagaMilliSecondsSinceEpoch = 360000000;
+    public List<Vaga> vagas = new ArrayList<Vaga>(12) {};
 
-    public List<Vaga> vagas = new ArrayList<Vaga>() {
-        {
-            new Vaga(100);
-            new Vaga(101);
-            new Vaga(102);
-            new Vaga(103);
-            new Vaga(104);
-            new Vaga(105);
-            new Vaga(106);
-            new Vaga(107);
-            new Vaga(108);
-            new Vaga(109);
-            new Vaga(110);
-            new Vaga(111);
+    public Estacionamento(BlockingQueue<Carro> carroEstacioando) {
+        this.carroEstacioando = carroEstacioando;
+    }
+
+    
+    public void run(){
+        while(taken != 12){
+            try {
+                Carro car = this.carroEstacioando.take();
+                System.out.println("Está na garagem " + car.getPlacaString());
+                
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-    };
+    }
 
-    public int consultaDispVagas() {
+    public synchronized int consultaDispVagas() {
         for (Vaga vaga : vagas) {
             Carro tmp = vaga.getCarro();
             if (tmp.getPlacaString() == null) {
@@ -39,7 +44,7 @@ public class Estacionamento {
         return -1;
     }
 
-    public boolean chegaCarro(Carro novoCarro) {
+    public synchronized boolean chegaCarro(Carro novoCarro) {
         int codigoVaga = consultaDispVagas();
         if (codigoVaga != -1) {
             Vaga tmp = vagas.get(codigoVaga);
@@ -50,7 +55,7 @@ public class Estacionamento {
         return false;
     }
 
-    public boolean desocupaVagaPorTempo(Carro novoCarro) {
+    public synchronized boolean desocupaVagaPorTempo(Carro novoCarro) {
 
         for (Vaga vaga : vagas) {
             int time = vaga.getDt();
