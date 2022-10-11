@@ -9,34 +9,34 @@ import java.util.concurrent.BlockingQueue;
 public class Atendente extends Thread {
 
     public Estacionamento estacionamento;
-    public BlockingQueue<Carro> esperando;
+    public BlockingQueue<Carro> carroEstacionado;
 
-
-    public Atendente(Estacionamento estacionamento, BlockingQueue<Carro> esperando) {
+    public Atendente(Estacionamento estacionamento, BlockingQueue<Carro> carroEstacionado) {
         this.estacionamento = estacionamento;
-        this.esperando = esperando;
+        this.carroEstacionado = carroEstacionado;
     }
 
     @Override
     public void run() {
-        for (int i = 1; i < 13; i++) {
-          try {
-            System.out.println(" To trabalhando pae!");
-            int indexVaga = estacionamento.consultaDispVagas();
-            System.out.println(indexVaga);
-            Carro carroEsperando = esperando.take();
-            System.out.println("espera " + carroEsperando.getPlacaString());
-            if (indexVaga == -1 && carroEsperando != null) {
-                System.out.println(" Adicionando Carro" + getName());
-                //estacionamento.chegaCarro(carroEsperando);
-                Thread.sleep(800);
+        for (int indexVaga = 0; indexVaga < 12; indexVaga++) {
+            try {
+                System.out.println("index Vaga " + indexVaga);
+                System.out.println(" To trabalhando pae!");
+                int numVaga = estacionamento.consultaDispVagas();
+                System.out.println("numero vaga " + numVaga);
+                Carro carroEsperando = carroEstacionado.take();
+                System.out.println("espera " + carroEsperando.getPlacaString());
+                if (numVaga != -1) {
+                    System.out.println(" Adicionando Carro");
+                    estacionamento.chegaCarro(carroEsperando);
+                    //Thread.sleep(8000);
+                }
+                
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        }
-       
 
     }
 }

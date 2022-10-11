@@ -10,35 +10,51 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
-public class Estacionamento extends Thread{
+public class Estacionamento extends Thread {
     BlockingQueue<Carro> carroEstacioando;
-    int taken = -1;
-    private int tempoLimitePorVagaMilliSecondsSinceEpoch = 360000000;
-    public List<Vaga> vagas = new ArrayList<Vaga>(12) {};
+    private final int tempoLimitePorVagaMilliSecondsSinceEpoch = 360000000;
+    public List<Vaga> vagas = new ArrayList<Vaga>() {
+        {
+            new Vaga(100);
+            new Vaga(101);
+            new Vaga(102);
+            new Vaga(103);
+            new Vaga(104);
+            new Vaga(105);
+            new Vaga(106);
+            new Vaga(107);
+            new Vaga(108);
+            new Vaga(109);
+            new Vaga(110);
+            new Vaga(111);
+        }
+    };
 
     public Estacionamento(BlockingQueue<Carro> carroEstacioando) {
         this.carroEstacioando = carroEstacioando;
     }
 
-    
-    public void run(){
-        while(taken != 12){
-            try {
-                Carro car = this.carroEstacioando.take();
-                System.out.println("Está na garagem " + car.getPlacaString());
-                
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
+    public void run() {
+
+        try {
+            Carro car = this.carroEstacioando.take();
+            System.out.println("Está na garagem " + car.getPlacaString());
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        
     }
 
     public synchronized int consultaDispVagas() {
+        System.out.println("vagas " + vagas);
         for (Vaga vaga : vagas) {
-            Carro tmp = vaga.getCarro();
-            if (tmp.getPlacaString() == null) {
+            System.out.println("vagas " + vaga);
+            Carro car = vaga.getCarro();
+            if (car != null) {
+                System.out.println("index of " + vagas.indexOf(vaga));
                 return vagas.indexOf(vaga);
+                
             }
         }
         return -1;
@@ -59,7 +75,7 @@ public class Estacionamento extends Thread{
 
         for (Vaga vaga : vagas) {
             int time = vaga.getDt();
-            if (time > -1) {
+            if (time > 0) {
                 if (LocalDateTime.now().getNano() + tempoLimitePorVagaMilliSecondsSinceEpoch > time) {
                     Vaga tmp = vaga;
                     tmp.setCarro(null);
