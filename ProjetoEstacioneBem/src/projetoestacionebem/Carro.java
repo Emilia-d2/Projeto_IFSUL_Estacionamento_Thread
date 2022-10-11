@@ -1,5 +1,7 @@
 package projetoestacionebem;
 
+import java.util.concurrent.BlockingQueue;
+
 /**
  *
  * @author milif
@@ -17,5 +19,9 @@ public class Carro {
 
     public String getPlacaString() {
         return placaString;
+    }
+
+    void put(BlockingQueue<Carro> listaEsperaCarros) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

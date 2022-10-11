@@ -6,38 +6,37 @@ package projetoestacionebem;
  */
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 public class Estacionamento extends Thread {
-    BlockingQueue<Carro> carroEstacioando;
+    BlockingQueue<Carro> listaEsperaCarros;
     private final int tempoLimitePorVagaMilliSecondsSinceEpoch = 360000000;
-    public List<Vaga> vagas = new ArrayList<Vaga>() {
-        {
-            new Vaga(100);
-            new Vaga(101);
-            new Vaga(102);
-            new Vaga(103);
-            new Vaga(104);
-            new Vaga(105);
-            new Vaga(106);
-            new Vaga(107);
-            new Vaga(108);
-            new Vaga(109);
-            new Vaga(110);
-            new Vaga(111);
-        }
-    };
+    public List<Vaga> vagas = Arrays.asList(
+    new Vaga(100),
+    new Vaga(101),
+    new Vaga(102),
+    new Vaga(103),
+    new Vaga(104),
+    new Vaga(105),
+    new Vaga(106),
+    new Vaga(107),
+    new Vaga(108),
+    new Vaga(109),
+    new Vaga(110),
+    new Vaga(111)
+    );
 
-    public Estacionamento(BlockingQueue<Carro> carroEstacioando) {
-        this.carroEstacioando = carroEstacioando;
+    public Estacionamento(BlockingQueue<Carro> listaEsperaCarros) {
+        this.listaEsperaCarros = listaEsperaCarros;
     }
 
+    @Override
     public void run() {
 
         try {
-            Carro car = this.carroEstacioando.take();
+            Carro car = this.listaEsperaCarros.take();
             System.out.println("Está na garagem " + car.getPlacaString());
 
         } catch (InterruptedException e) {
@@ -47,12 +46,10 @@ public class Estacionamento extends Thread {
     }
 
     public synchronized int consultaDispVagas() {
-        System.out.println("vagas " + vagas);
         for (Vaga vaga : vagas) {
-            System.out.println("vagas " + vaga);
+            System.out.println("vagas " + vagas.get(MIN_PRIORITY));
             Carro car = vaga.getCarro();
-            if (car != null) {
-                System.out.println("index of " + vagas.indexOf(vaga));
+            if (car == null) {
                 return vagas.indexOf(vaga);
                 
             }
@@ -87,5 +84,6 @@ public class Estacionamento extends Thread {
 
         return false;
     }
+
 
 }

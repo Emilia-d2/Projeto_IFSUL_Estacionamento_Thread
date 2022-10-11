@@ -14,10 +14,6 @@ public class ProjetoEstacioneBem {
 
     public static void main(String[] args) throws InterruptedException, IOException {
         BlockingQueue<Carro> listaEsperaCarros = new ArrayBlockingQueue(12);
-
-        Estacionamento estacioneBem = new Estacionamento(listaEsperaCarros);
-
-        Atendente atend = new Atendente(estacioneBem, listaEsperaCarros);
         
         System.out.println("Bem vindo ao Estacione Bem!");
         BufferedReader placa = new BufferedReader(
@@ -28,11 +24,14 @@ public class ProjetoEstacioneBem {
 
         Carro newCar = new Carro(namePlaca);
         listaEsperaCarros.put(newCar);
-        System.out.println(" sua placa é " + newCar.getPlacaString());
-        atend.start();
-        estacioneBem.start();
-        
        
+        System.out.println(" sua placa é " + newCar.getPlacaString());
+        
+        Estacionamento estacioneBem = new Estacionamento(listaEsperaCarros);
+        estacioneBem.start();
+
+        Atendente atend = new Atendente(estacioneBem, listaEsperaCarros);
+        atend.start();
 
     }
 
