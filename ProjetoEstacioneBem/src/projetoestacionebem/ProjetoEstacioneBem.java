@@ -13,7 +13,7 @@ import java.util.concurrent.BlockingQueue;
 public class ProjetoEstacioneBem {
 
     public static void main(String[] args) 
-        throws InterruptedException, IOException {
+        throws InterruptedException, IOException{
             int totalVagas = 12;
             BlockingQueue<Carro> listaEsperaCarros = new ArrayBlockingQueue(totalVagas);
             Boolean controleDeLaco = true;
@@ -36,21 +36,22 @@ public class ProjetoEstacioneBem {
                     Carro newCar = new Carro(namePlaca);
                     listaEsperaCarros.put(newCar);
                     
-                    if(totalVagas == 12){
-                        listaEsperaCarros.remove();
+                    if(totalVagas > 12){
+                    System.out.println("quero ver quando vem aqui");
+                    listaEsperaCarros.remove();
                     }
-
+                    
                     System.out.println("Deseja colocar na garagem? S-Sim | N-Não: ");
                     colocaGaragem = insere.readLine();
 
-                        if(colocaGaragem.equalsIgnoreCase("s")){
+                    if(colocaGaragem.equalsIgnoreCase("s")){
 
-                        Estacionamento estacione = new Estacionamento(listaEsperaCarros);
-                        estacione.start();
+                    Estacionamento estacione = new Estacionamento(listaEsperaCarros);
+                    estacione.start();
 
-                        Atendente atend = new Atendente(estacione, listaEsperaCarros);
-                        atend.start();   
-                    }
+                    Atendente atend = new Atendente(estacione, listaEsperaCarros);
+                    atend.start();   
+                }
 
                 } else {
                     break;

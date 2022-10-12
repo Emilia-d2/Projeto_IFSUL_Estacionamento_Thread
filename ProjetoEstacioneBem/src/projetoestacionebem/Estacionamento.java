@@ -13,6 +13,7 @@ public class Estacionamento extends Thread {
     BlockingQueue<Carro> listaEsperaCarros;
     private final int tempoLimitePorVagaMilliSecondsSinceEpoch = 3600;
     public ArrayList<Vaga> vagas = new ArrayList(12);
+    int pegaCarro = -1;
 
     public Estacionamento(BlockingQueue<Carro> listaEsperaCarros) {
         this.listaEsperaCarros = listaEsperaCarros;
@@ -20,16 +21,21 @@ public class Estacionamento extends Thread {
 
     @Override
     public void run() {
-        try {
+        
+        while(pegaCarro <= 12){
+            try {
             Carro car = this.listaEsperaCarros.take();
             System.out.println("Está na garagem " + car.getPlacaString());
-            System.out.println("Carros na garagem: " + vagas.toString());
-            sleep(800);
-        } catch (InterruptedException e) {
+            
+                if(vagas.size() == 12){
+                    desocupaVagaPorTempo();
+                    System.out.println("aqui veio");
+                }
+                Thread.sleep(800);
+            } catch (InterruptedException e) {
             e.printStackTrace();
-        } 
-
-        
+            } 
+        }      
     }
 
     public synchronized int consultaDispVagas() {
