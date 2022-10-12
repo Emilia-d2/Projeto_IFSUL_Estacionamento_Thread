@@ -1,38 +1,71 @@
 package projetoestacionebem;
-import java.util.concurrent.BlockingQueue;
 
 /**
  *
  * @author milif
  */
-public class Estacionamento extends Thread {
-    public Atendente estacionamento;
-    public BlockingQueue<Carro> listaEsperaCarros;
 
-    public Estacionamento(Atendente estacionamento, BlockingQueue<Carro> listaEsperaCarros) {
-        this.estacionamento = estacionamento;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
+
+public class Estacionamento extends Thread {
+    BlockingQueue<Carro> listaEsperaCarros;
+    private final int tempoLimitePorVagaMilliSecondsSinceEpoch = 3600;
+    public ArrayList<Vaga> vagas = new ArrayList(12);
+
+    public Estacionamento(BlockingQueue<Carro> listaEsperaCarros) {
         this.listaEsperaCarros = listaEsperaCarros;
     }
 
     @Override
     public void run() {
-        for (int indexVaga = 0; indexVaga < 12; indexVaga++) {
-            try {
-                System.out.println("To trabalhando!");
-                int numVaga = estacionamento.consultaDispVagas();
-                Carro carroEsperando = listaEsperaCarros.take();
-                System.out.println("espera " + carroEsperando.getPlacaString());
-                
-                if (numVaga == -1) {
-                    System.out.println("Adicionando Carro ");
-                    estacionamento.chegaCarro(carroEsperando);
-                    Thread.sleep(800);
-                } 
+        try {
+            Carro car = this.listaEsperaCarros.take();
+            System.out.println("Está na garagem " + car.getPlacaString());
+            System.out.println("Carros na garagem: " + vagas.toString());
+            sleep(800);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } 
 
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        
+    }
+
+    public synchronized int consultaDispVagas() {
+        for (Vaga vaga : vagas) {
+            Carro car = vaga.getCarro();
+            if (car == null) {
+                return vagas.indexOf(vaga);
+                
             }
         }
+        return -1;
+    }
 
+    public synchronized boolean chegaCarro(Carro novoCarro) {
+        int codigoVaga = consultaDispVagas();
+        if (codigoVaga != -1) {
+            Vaga tmp = vagas.get(codigoVaga);
+            tmp.setCarro(novoCarro);
+            vagas.set(codigoVaga, tmp);
+            return true;
+        }
+        return false;
+    }
+
+    public synchronized boolean desocupaVagaPorTempo() {
+        for (Vaga vaga : vagas) {
+            int time = vaga.getDt();
+            if (time > 0) {
+                if (LocalDateTime.now().getNano() + tempoLimitePorVagaMilliSecondsSinceEpoch > time) {
+                    Vaga tmp = vaga;
+                    tmp.setCarro(null);
+                    vagas.set(vagas.indexOf(vaga), tmp);
+                }
+
+            }
+        }
+        return false;
     }
 }
