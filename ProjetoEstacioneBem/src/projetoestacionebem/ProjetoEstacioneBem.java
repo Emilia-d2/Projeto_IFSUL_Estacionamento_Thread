@@ -14,25 +14,31 @@ public class ProjetoEstacioneBem {
 
     public static void main(String[] args) throws InterruptedException, IOException {
         BlockingQueue<Carro> listaEsperaCarros = new ArrayBlockingQueue(12);
-        
-        System.out.println("Bem vindo ao Estacione Bem!");
-        BufferedReader placa = new BufferedReader(
-                new InputStreamReader(System.in));
+        Boolean controleDeLaco = true;
+        BufferedReader opcaoUsu = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader placa = new BufferedReader(new InputStreamReader(System.in));
+        String namePlaca;
+        String opcaoSelecionada;
+        while(controleDeLaco){
+            System.out.println("Bem vindo ao Estacione Bem!");
 
-        System.out.println("Digite sua placa: ");
-        String namePlaca = placa.readLine();
+            System.out.println("Deseja continuar S-Sim | N-Não: ");
+            opcaoSelecionada = opcaoUsu.readLine();
+            if (opcaoSelecionada.equalsIgnoreCase("S")) {
+                System.out.println("Digite sua placa: ");
+                namePlaca = placa.readLine();
+            
+                Carro newCar = new Carro(namePlaca);
+                listaEsperaCarros.add(newCar);
+            } else {
+                Atendente atend = new Atendente(listaEsperaCarros);
+                atend.start();
 
-        Carro newCar = new Carro(namePlaca);
-        listaEsperaCarros.put(newCar);
-       
-        System.out.println(" sua placa é " + newCar.getPlacaString());
-        
-        Estacionamento estacioneBem = new Estacionamento(listaEsperaCarros);
-        estacioneBem.start();
-
-        Atendente atend = new Atendente(estacioneBem, listaEsperaCarros);
-        atend.start();
-
+                Estacionamento estacione = new Estacionamento(atend, listaEsperaCarros);
+                estacione.start();                          
+                
+                break;
+            }   
+        }   
     }
-
 }
