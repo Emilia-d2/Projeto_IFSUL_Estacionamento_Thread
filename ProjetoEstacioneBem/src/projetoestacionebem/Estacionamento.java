@@ -1,14 +1,11 @@
 package projetoestacionebem;
-
-/**
- *
- * @author milif
- */
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 
+/**Classe de Estacionamento extends Thread, onde serão contidos, valores e métodos para o mesmo.
+ * @author milif
+ */
 public class Estacionamento extends Thread {
     BlockingQueue<Carro> listaEsperaCarros;
     private final int tempoLimitePorVagaMilliSecondsSinceEpoch = 3600;
@@ -19,9 +16,13 @@ public class Estacionamento extends Thread {
         this.listaEsperaCarros = listaEsperaCarros;
     }
 
+    
+/**Método para inicializar thread que espera a quantidade de 12 carros, já que mais desse valor estacionamento nao aceita.
+* Mostra se esta na garagem e controla tempo de cada carro por vaga. 
+* @author milif
+*/
     @Override
     public void run() {
-        
         while(pegaCarro <= 12){
             try {
             Carro car = this.listaEsperaCarros.take();
@@ -29,6 +30,9 @@ public class Estacionamento extends Thread {
             
                 if(vagas.size() == 12){
                     desocupaVagaPorTempo();
+                    if(desocupaVagaPorTempo() == true){
+                        this.listaEsperaCarros.remove();
+                    }
                     System.out.println("aqui veio");
                 }
                 Thread.sleep(800);
@@ -37,7 +41,10 @@ public class Estacionamento extends Thread {
             } 
         }      
     }
-
+    
+/** Método para consultar se há vagas disponiveis. 
+* @return int - se nao esta disponivel
+*/
     public synchronized int consultaDispVagas() {
         for (Vaga vaga : vagas) {
             Carro car = vaga.getCarro();
@@ -48,7 +55,10 @@ public class Estacionamento extends Thread {
         }
         return -1;
     }
-
+    
+/** Método para consultar se há chega um carro novo. 
+* @return boolean - valor false
+*/
     public synchronized boolean chegaCarro(Carro novoCarro) {
         int codigoVaga = consultaDispVagas();
         if (codigoVaga != -1) {
@@ -59,7 +69,10 @@ public class Estacionamento extends Thread {
         }
         return false;
     }
-
+    
+/** Método para desocupar vaga por tempo 
+* @return boolean - valor false
+*/
     public synchronized boolean desocupaVagaPorTempo() {
         for (Vaga vaga : vagas) {
             int time = vaga.getDt();

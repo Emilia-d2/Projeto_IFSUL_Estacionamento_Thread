@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 /**Classe de objeto Vaga para Estacionamento, onde serão contidos, valores e métodos para o mesmo.
  * @author milif
  */
-
 public class Vaga {
     private int codigo;
     private LocalDateTime dt;

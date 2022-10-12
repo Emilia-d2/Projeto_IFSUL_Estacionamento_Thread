@@ -13,6 +13,10 @@ public class Atendente extends Thread {
         this.listaEsperaCarros = listaEsperaCarros;
     }
 
+/**Método para inicializar thread, percorrendo index da lista por index e efetuando o controle do atendente.
+ * Pegando o carro e adiocionando na garagem
+ * @author milif
+ */
     @Override
     public void run() {
         for (int indexVaga = 0; indexVaga < 12; indexVaga++) {
@@ -33,5 +37,6 @@ public class Atendente extends Thread {
             }
             break;
         }
+        Thread.interrupted();
     }
 }
