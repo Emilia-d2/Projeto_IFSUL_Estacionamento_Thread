@@ -21,7 +21,7 @@ public class ProjetoEstacioneBem {
             Boolean controleDeLaco = true;
             
             //Declara blockingQueue
-            BlockingQueue<Carro> listaEsperaCarros = new ArrayBlockingQueue(totalVagas);   
+            BlockingQueue<Carro> listaCarros = new ArrayBlockingQueue(totalVagas);   
             
             //Declara inputs
             BufferedReader opcaoUsu = new BufferedReader(new InputStreamReader(System.in));
@@ -39,12 +39,12 @@ public class ProjetoEstacioneBem {
                     System.out.println("Digite sua placa: ");
                     namePlaca = placa.readLine();
                     Carro newCar = new Carro(namePlaca);
-                    listaEsperaCarros.put(newCar);
+                    listaCarros.put(newCar);
                     
                     //Condicao se passar de 12 vagas, remove os carros que estao esperando
                     if(totalVagas > 12){
                     System.out.println("quero ver quando vem aqui");
-                    listaEsperaCarros.remove();
+                    listaCarros.remove();
                     }
                     
                     System.out.println("Deseja colocar na garagem? S-Sim | N-Não: ");
@@ -53,11 +53,13 @@ public class ProjetoEstacioneBem {
                     //Condicao que inicializa as threads
                     if(colocaGaragem.equalsIgnoreCase("s")){
 
-                    Estacionamento estacione = new Estacionamento(listaEsperaCarros);
+                    Estacionamento estacione = new Estacionamento(listaCarros);
                     estacione.start();
 
-                    Atendente atend = new Atendente(estacione, listaEsperaCarros);
+                    Atendente atend = new Atendente(estacione, listaCarros);
                     atend.start();   
+                    
+                    Thread.interrupted();
                 }
 
                 } else {

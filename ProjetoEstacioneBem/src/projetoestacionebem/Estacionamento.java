@@ -7,13 +7,14 @@ import java.util.concurrent.BlockingQueue;
  * @author milif
  */
 public class Estacionamento extends Thread {
-    BlockingQueue<Carro> listaEsperaCarros;
+    BlockingQueue<Carro> listaCarros;
     private final int tempoLimitePorVagaMilliSecondsSinceEpoch = 3600;
     public ArrayList<Vaga> vagas = new ArrayList(12);
     int pegaCarro = -1;
+    double salario = 1;
 
-    public Estacionamento(BlockingQueue<Carro> listaEsperaCarros) {
-        this.listaEsperaCarros = listaEsperaCarros;
+    public Estacionamento(BlockingQueue<Carro> listaCarros) {
+        this.listaCarros = listaCarros;
     }
 
     
@@ -28,19 +29,16 @@ public class Estacionamento extends Thread {
                 if(vagas.size() == 12){
                     desocupaVagaPorTempo();
                     if(desocupaVagaPorTempo() == true){
-                        this.listaEsperaCarros.remove();
+                        this.listaCarros.remove();
                     }
                 }
-                Carro car = this.listaEsperaCarros.take();
+                Carro car = this.listaCarros.take();
                 System.out.println("Está na garagem " + car.getPlacaString());
-                System.out.println("Seu salário de trabalho até aqui está de R$: ");
-                
-                
-                
+                System.out.println("Seu salário total por todos os carros estacionados é de R$: " + ++salario);
+                      
             } catch (InterruptedException e) {
-            e.printStackTrace();
-            }           
-        }      
+            }   
+        }       
     }
     
 /** Método para consultar se há vagas disponiveis. 
@@ -57,7 +55,8 @@ public class Estacionamento extends Thread {
         return -1;
     }
     
-/** Método para consultar se há chega um carro novo. 
+/** Método para consultar se há chega um carro novo.
+* @param novoCarro
 * @return boolean - valor false
 */
     public synchronized boolean chegaCarro(Carro novoCarro) {

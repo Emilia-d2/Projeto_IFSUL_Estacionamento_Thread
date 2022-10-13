@@ -6,11 +6,11 @@ import java.util.concurrent.BlockingQueue;
  */
 public class Atendente extends Thread {
     public Estacionamento estaciona;
-    public BlockingQueue<Carro> listaEsperaCarros;
+    public BlockingQueue<Carro> listaCarros;
 
-    public Atendente(Estacionamento estaciona, BlockingQueue<Carro> listaEsperaCarros) {
+    public Atendente(Estacionamento estaciona, BlockingQueue<Carro> listaCarros) {
         this.estaciona = estaciona;
-        this.listaEsperaCarros = listaEsperaCarros;
+        this.listaCarros = listaCarros;
     }
 
 /**Método para inicializar thread, percorrendo index da lista por index e efetuando o controle do atendente.
@@ -23,7 +23,7 @@ public class Atendente extends Thread {
             try {
                 System.out.println("To trabalhando!");
                 int numVaga = estaciona.consultaDispVagas();  
-                Carro carroEsperando = listaEsperaCarros.take();
+                Carro carroEsperando = listaCarros.take();
                 System.out.println("Carro ficou esperando e saiu! " + carroEsperando.getPlacaString());
                 if (numVaga == -1) {                  
                     estaciona.chegaCarro(carroEsperando);  
@@ -32,10 +32,8 @@ public class Atendente extends Thread {
                 }
                 Thread.sleep(8000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
             }
             break;
         }
-        
     }
 }
