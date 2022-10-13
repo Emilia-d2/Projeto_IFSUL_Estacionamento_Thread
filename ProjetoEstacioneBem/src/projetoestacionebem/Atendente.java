@@ -25,18 +25,17 @@ public class Atendente extends Thread {
                 int numVaga = estaciona.consultaDispVagas();  
                 Carro carroEsperando = listaEsperaCarros.take();
                 System.out.println("Carro ficou esperando e saiu! " + carroEsperando.getPlacaString());
-                Thread.sleep(800);
-                if (numVaga == -1) {
-                    System.out.println("Colocando carros na garagem! ");                    
-                    estaciona.chegaCarro(carroEsperando);
+                if (numVaga == -1) {                  
+                    estaciona.chegaCarro(carroEsperando);  
                 }else{
                     System.out.println("Oops");
                 }
+                Thread.sleep(8000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             break;
         }
-        Thread.interrupted();
+        
     }
 }

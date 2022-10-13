@@ -25,20 +25,21 @@ public class Estacionamento extends Thread {
     public void run() {
         while(pegaCarro <= 12){
             try {
-            Carro car = this.listaEsperaCarros.take();
-            System.out.println("Está na garagem " + car.getPlacaString());
-            
                 if(vagas.size() == 12){
                     desocupaVagaPorTempo();
                     if(desocupaVagaPorTempo() == true){
                         this.listaEsperaCarros.remove();
                     }
-                    System.out.println("aqui veio");
                 }
-                Thread.sleep(800);
+                Carro car = this.listaEsperaCarros.take();
+                System.out.println("Está na garagem " + car.getPlacaString());
+                System.out.println("Seu salário de trabalho até aqui está de R$: ");
+                
+                
+                
             } catch (InterruptedException e) {
             e.printStackTrace();
-            } 
+            }           
         }      
     }
     
