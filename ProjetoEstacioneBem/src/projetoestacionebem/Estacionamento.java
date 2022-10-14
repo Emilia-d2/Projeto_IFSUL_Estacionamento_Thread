@@ -29,7 +29,7 @@ public class Estacionamento extends Thread {
                 if(vagas.size() == 12){
                     desocupaVagaPorTempo();
                     if(desocupaVagaPorTempo() == true){
-                        this.listaCarros.remove();
+                        this.vagas.remove(pegaCarro);
                     }
                 }
                 Carro car = this.listaCarros.take();

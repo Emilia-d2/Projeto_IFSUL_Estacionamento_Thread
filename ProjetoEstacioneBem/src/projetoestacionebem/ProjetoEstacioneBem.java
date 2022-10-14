@@ -18,7 +18,7 @@ public class ProjetoEstacioneBem {
             String namePlaca;
             String opcaoSelecionada;
             String colocaGaragem;
-            Boolean controleDeLaco = true;
+            boolean controleDeLaco = true;
             
             //Declara blockingQueue
             BlockingQueue<Carro> listaCarros = new ArrayBlockingQueue(totalVagas);   
@@ -43,7 +43,6 @@ public class ProjetoEstacioneBem {
                     
                     //Condicao se passar de 12 vagas, remove os carros que estao esperando
                     if(totalVagas > 12){
-                    System.out.println("quero ver quando vem aqui");
                     listaCarros.remove();
                     }
                     
@@ -60,11 +59,12 @@ public class ProjetoEstacioneBem {
                     atend.start();   
                     
                     Thread.interrupted();
+                  
                 }
 
                 } else {
                     break;
-                }   
-        }   
+                }  
+        }        
     }
 }

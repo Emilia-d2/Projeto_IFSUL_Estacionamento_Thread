@@ -23,13 +23,13 @@ public class Atendente extends Thread {
             try {
                 System.out.println("To trabalhando!");
                 int numVaga = estaciona.consultaDispVagas();  
-                Carro carroEsperando = listaCarros.take();
-                System.out.println("Carro ficou esperando e saiu! " + carroEsperando.getPlacaString());
+                Carro chegouCarro = listaCarros.take();
                 if (numVaga == -1) {                  
-                    estaciona.chegaCarro(carroEsperando);  
+                    estaciona.chegaCarro(chegouCarro);  
                 }else{
                     System.out.println("Oops");
                 }
+                System.out.println("Carro ficou esperando e saiu! " + chegouCarro.getPlacaString());
                 Thread.sleep(8000);
             } catch (InterruptedException e) {
             }
